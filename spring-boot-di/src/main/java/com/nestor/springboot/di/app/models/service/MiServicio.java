@@ -2,6 +2,7 @@ package com.nestor.springboot.di.app.models.service;
 
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class MiServicio {
 
