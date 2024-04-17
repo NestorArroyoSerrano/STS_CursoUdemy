@@ -24,6 +24,7 @@ public class FormController {
 		return "form";
 	}
 	
+	/*
 	@PostMapping("/form")
 	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) { 
 //			@RequestParam(name="username") String username, 
@@ -32,15 +33,27 @@ public class FormController {
 		
 		model.addAttribute("titulo", "Resultado form");
 		if(result.hasErrors()) {
-			Map<String, String> errores = new HashMap<>();
-			result.getFieldErrors().forEach(err -> {
-				errores.put(err.getField(), "El campo ".concat(err.getField()).concat("").concat(err.getDefaultMessage()));
-			});
-			model.addAttribute("error", errores);
+//			Map<String, String> errores = new HashMap<>();
+//			result.getFieldErrors().forEach(err -> {
+//				errores.put(err.getField(), "El campo ".concat(err.getField()).concat("").concat(err.getDefaultMessage()));
+//			});
+//			model.addAttribute("error", errores);
 			return "form";
 		}
 		model.addAttribute("usuario", usuario);
 				
 		return "resultado";
+	}
+	*/
+	@PostMapping("/form")
+	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) {
+	    model.addAttribute("titulo", "Resultado form");
+	    if (result.hasErrors()) {
+	        // Aquí estás devolviendo el objeto BindingResult en el modelo
+	        model.addAttribute("org.springframework.validation.BindingResult.usuario", result);
+	        return "form";
+	    }
+	    model.addAttribute("usuario", usuario);
+	    return "resultado";
 	}
 }
