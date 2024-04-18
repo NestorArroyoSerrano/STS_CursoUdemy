@@ -1,6 +1,7 @@
 package com.nestor.springboot.form.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.nestor.springboot.form.app.models.domain.Usuario;
@@ -30,6 +33,10 @@ public class FormController {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.addValidators(validador);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);  // "Lenient" en inglés significa tolerante o permisivo. Por lo tanto, cuando setLenient se establece en true, el analizador de fechas será tolerante con ciertos errores o discrepancias en el formato de entrada.
+										//Cuando setLenient se establece en false, el analizador de fechas será menos tolerante y requerirá que la entrada coincida exactamente con el formato especificado.
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
 	}
 	
 	@GetMapping("/form")
