@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-//import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Past;
 //import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -48,9 +48,12 @@ public class Usuario {
 	private Integer cuenta;
 	
 	@NotNull
-	@Future
+	@Past
 	//@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date fechaNacimiento;
+	
+	@NotEmpty
+	private String pais;
 	
 	public Usuario() {
 		
@@ -117,6 +120,14 @@ public class Usuario {
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 	
 }
