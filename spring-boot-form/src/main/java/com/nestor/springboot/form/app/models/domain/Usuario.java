@@ -1,12 +1,14 @@
 package com.nestor.springboot.form.app.models.domain;
 
 import java.util.Date;
+import java.util.List;
 
 //import org.springframework.format.annotation.DateTimeFormat;
 
 import com.nestor.springboot.form.app.validation.IdentificadorRegex;
 import com.nestor.springboot.form.app.validation.Requerido;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
@@ -52,8 +54,11 @@ public class Usuario {
 	//@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date fechaNacimiento;
 	
+	@NotNull
+	private Pais pais;
+		
 	@NotEmpty
-	private String pais;
+	private List<String> roles;
 	
 	public Usuario() {
 		
@@ -122,12 +127,20 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public String getPais() {
+	public Pais getPais() {
 		return pais;
 	}
 
-	public void setPais(String pais) {
+	public void setPais(Pais pais) {
 		this.pais = pais;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 	
 }

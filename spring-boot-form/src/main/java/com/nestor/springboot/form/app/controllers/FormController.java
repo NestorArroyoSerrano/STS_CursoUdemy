@@ -20,9 +20,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.nestor.springboot.form.app.editors.NombreMayusculaEditor;
+import com.nestor.springboot.form.app.editors.PaisPropertyEditor;
+import com.nestor.springboot.form.app.models.domain.Pais;
 import com.nestor.springboot.form.app.models.domain.Usuario;
+import com.nestor.springboot.form.app.services.PaisService;
 import com.nestor.springboot.form.app.validation.UsuarioValidador;
 
 import jakarta.validation.Valid;
@@ -33,6 +37,12 @@ public class FormController {
 	
 	@Autowired
 	private UsuarioValidador validador;
+	
+	@Autowired
+	private PaisService paisService;
+	
+	@Autowired
+	private PaisPropertyEditor paisEditor;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -44,6 +54,8 @@ public class FormController {
 		
 		binder.registerCustomEditor(String.class, "nombre", new NombreMayusculaEditor());
 		binder.registerCustomEditor(String.class, "apellido", new NombreMayusculaEditor());
+		
+		binder.registerCustomEditor(Pais.class, "pais", paisEditor);
 	}
 	
 	@GetMapping("/form")
@@ -78,6 +90,20 @@ public class FormController {
 		return "resultado";
 	}
 	*/
+	
+	@ModelAttribute("listaPaises")
+	public List<Pais> listaPaises() {
+		return paisService.listar();
+	}
+	
+	@ModelAttribute("listaRolesString")
+	public List <String> listaRolesString() {
+		List<String> roles = new ArrayList<>();
+		roles.add("ROLE_ADMIN");
+		roles.add("ROLE_USER");
+		roles.add("ROLE_MODERATOR");
+		return roles;
+	}
 	
 	@ModelAttribute("paises")
 	public List<String> paises() {
