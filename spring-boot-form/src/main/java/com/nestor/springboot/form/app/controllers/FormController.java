@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -24,9 +25,12 @@ import java.util.ArrayList;
 
 import com.nestor.springboot.form.app.editors.NombreMayusculaEditor;
 import com.nestor.springboot.form.app.editors.PaisPropertyEditor;
+import com.nestor.springboot.form.app.editors.RolesEditor;
 import com.nestor.springboot.form.app.models.domain.Pais;
+import com.nestor.springboot.form.app.models.domain.Role;
 import com.nestor.springboot.form.app.models.domain.Usuario;
 import com.nestor.springboot.form.app.services.PaisService;
+import com.nestor.springboot.form.app.services.RoleService;
 import com.nestor.springboot.form.app.validation.UsuarioValidador;
 
 import jakarta.validation.Valid;
@@ -42,7 +46,13 @@ public class FormController {
 	private PaisService paisService;
 	
 	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
 	private PaisPropertyEditor paisEditor;
+	
+	@Autowired
+	private RolesEditor roleEditor;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -56,40 +66,18 @@ public class FormController {
 		binder.registerCustomEditor(String.class, "apellido", new NombreMayusculaEditor());
 		
 		binder.registerCustomEditor(Pais.class, "pais", paisEditor);
+		binder.registerCustomEditor(Role.class, "roles", roleEditor);
 	}
 	
-	@GetMapping("/form")
-	public String form(Model model) {
-		Usuario usuario = new Usuario();
-		usuario.setNombre("Juan");
-		usuario.setApellido("Martínez");
-		usuario.setIdentificador("123.456.789-K");
-		model.addAttribute("titulo", "Formulario usuarios");
-		model.addAttribute("usuario", usuario);
-		return "form";
+	@ModelAttribute("genero")
+	public List<String> genero() {
+		return Arrays.asList("Hombre", "Mujer");
 	}
 	
-	/*
-	@PostMapping("/form")
-	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) { 
-//			@RequestParam(name="username") String username, 
-//			@RequestParam String password,
-//			@RequestParam String email) {	
-		
-		model.addAttribute("titulo", "Resultado form");
-		if(result.hasErrors()) {
-//			Map<String, String> errores = new HashMap<>();
-//			result.getFieldErrors().forEach(err -> {
-//				errores.put(err.getField(), "El campo ".concat(err.getField()).concat("").concat(err.getDefaultMessage()));
-//			});
-//			model.addAttribute("error", errores);
-			return "form";
-		}
-		model.addAttribute("usuario", usuario);
-				
-		return "resultado";
+	@ModelAttribute("listaRoles")
+	public List<Role> listaRoles() {
+		return this.roleService.listar();
 	}
-	*/
 	
 	@ModelAttribute("listaPaises")
 	public List<Pais> listaPaises() {
@@ -133,18 +121,68 @@ public class FormController {
 		return paises;
 	}
 	
+	@GetMapping("/form")
+	public String form(Model model) {
+		Usuario usuario = new Usuario();
+		usuario.setNombre("Juan");
+		usuario.setApellido("Martínez");
+		usuario.setIdentificador("123.456.789-K");
+		usuario.setHabilitar(true);
+		usuario.setValorSecreto("Algún valor secreto ****");
+		usuario.setPais	(new Pais (1, "ES", "España"));
+		usuario.setRoles(Arrays.asList(new Role(2, "Usuario", "ROLE_USER")));
+		
+		
+		model.addAttribute("titulo", "Formulario usuarios");
+		model.addAttribute("usuario", usuario);
+		return "form";
+	}
+	
+	/*
 	@PostMapping("/form")
-	public String procesar(@Valid Usuario usuario, BindingResult result, Model model, SessionStatus status) {
-		validador.validate(usuario, result);
-	    model.addAttribute("titulo", "Resultado form");
+	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) { 
+//			@RequestParam(name="username") String username, 
+//			@RequestParam String password,
+//			@RequestParam String email) {	
+		
+		model.addAttribute("titulo", "Resultado form");
+		if(result.hasErrors()) {
+//			Map<String, String> errores = new HashMap<>();
+//			result.getFieldErrors().forEach(err -> {
+//				errores.put(err.getField(), "El campo ".concat(err.getField()).concat("").concat(err.getDefaultMessage()));
+//			});
+//			model.addAttribute("error", errores);
+			return "form";
+		}
+		model.addAttribute("usuario", usuario);
+				
+		return "resultado";
+	}
+	 */
+	@PostMapping("/form")
+	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) {
+		//validador.validate(usuario, result);
 	    
 	    if (result.hasErrors()) {
+	    	 model.addAttribute("titulo", "Resultado form");
 	        // Aquí estás devolviendo el objeto BindingResult en el modelo
 	        model.addAttribute("org.springframework.validation.BindingResult.usuario", result);
 	        return "form";
 	    }
-	    model.addAttribute("usuario", usuario);
-	    status.setComplete();
-	    return "resultado";
+	    
+	    return "redirect:/ver";
 	}
+	
+	@GetMapping("/ver")
+	public String ver(@SessionAttribute(name="usuario", required = false) Usuario usuario, Model model,  SessionStatus status) {
+		
+		if(usuario==null) {
+			return "redirect:/form";
+		}
+		model.addAttribute("titulo", "Resultado form");
+			
+		status.setComplete();
+		return "resultado";
+	}
+	
 }
