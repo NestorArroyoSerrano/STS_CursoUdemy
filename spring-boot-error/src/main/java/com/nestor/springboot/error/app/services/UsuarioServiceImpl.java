@@ -1,6 +1,7 @@
 package com.nestor.springboot.error.app.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	
 	private List<Usuario> lista;
-	
 	
 	public UsuarioServiceImpl() {
 		this.lista = new ArrayList<>();
@@ -28,7 +28,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 	@Override
 	public List<Usuario> listar() {
 
-		return null;
+		return this.lista;
 	}
 
 	@Override
@@ -41,6 +41,12 @@ public class UsuarioServiceImpl implements UsuarioService{
 			}
 		}
 		return resultado;
+	}
+
+	@Override
+	public Optional<Usuario> obtenerPorIdOptional(Integer id) {
+		Usuario usuario = this.obtenerPorId(id);
+		return Optional.ofNullable(usuario);
 	}
 
 }
