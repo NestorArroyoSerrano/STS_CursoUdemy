@@ -1,4 +1,4 @@
-package com.nestor.springboot.app.service;
+package com.nestor.springboot.app.models.service;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nestor.springboot.app.dao.IClienteDao;
+import com.nestor.springboot.app.models.dao.IClienteDao;
 import com.nestor.springboot.app.models.entity.Cliente;
 
 @Service
@@ -18,22 +18,23 @@ public class ClienteServiceImpl implements IClienteService {
 	private IClienteDao clienteDao;
 	
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
-		
+		// TODO Auto-generated method stub
 		return (List<Cliente>) clienteDao.findAll();
 	}
 
 	@Override
 	@Transactional
 	public void save(Cliente cliente) {
-		 clienteDao.save(cliente);
+		clienteDao.save(cliente);
 		
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Cliente findOne(Long id) {
+		// TODO Auto-generated method stub
 		return clienteDao.findById(id).orElse(null);
 	}
 
@@ -45,8 +46,8 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Cliente> findAll(Pageable pageable) {
 		return clienteDao.findAll(pageable);
 	}
-
 }
