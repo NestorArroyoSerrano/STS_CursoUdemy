@@ -42,7 +42,7 @@ public class FacturaController {
 	public String ver(@PathVariable(value="id") Long id,
 			Model model,
 			RedirectAttributes flash) {
-		Factura factura = clienteService.findFacturaById(id);
+		Factura factura = clienteService.fetchFacturaByIdWithClienteWithItemFacturaWithProducto(id); // clienteService.findFacturaById(id);
 		
 		if(factura==null) {
 			flash.addFlashAttribute("error", "La factura no existe en la base de datos!");
@@ -113,7 +113,7 @@ public class FacturaController {
 		clienteService.saveFactura(factura);
 		status.setComplete();
 
-		flash.addFlashAttribute("success", "Factrura creada con éxito!");
+		flash.addFlashAttribute("success", "Factura creada con éxito!");
 
 		return "redirect:/ver/" + factura.getCliente().getId();
 	}
