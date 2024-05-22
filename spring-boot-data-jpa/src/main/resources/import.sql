@@ -38,3 +38,11 @@ INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(1, 1, 1);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(2, 1, 4);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(1, 1, 5);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(1, 1, 7);
+
+
+INSERT INTO 'users' (username, password, enabled) VALUES ('andres', '$2a$10$EQOgsWn4HF.jYD2PDuPrGOWdpk2mGc40imJ4JMPIZd0/ShtdK8Dl', 1);
+INSERT INTO 'users' (username, password, enabled) VALUES ('admin', '$2a$10$99xqW8kskjDxkokP9Ea9deT.RxmLZCBU8F9b/gnSOrvuzeF07k5lW', 1);
+
+INSERT INTO 'authorities' (user_id, authority) VALUES (1, 'ROLE_USER');
+INSERT INTO 'authorities' (user_id, authority) VALUES (2, 'ROLE_ADMIN');
+INSERT INTO 'authorities' (user_id, authority) VALUES (2, 'ROLE_USER');
