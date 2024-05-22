@@ -38,25 +38,28 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     
  
     @Override
-	protected void configure(HttpSecurity http) throws Exception {
-    	
-	http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar").permitAll()
-//	.antMatchers("/ver/**").hasAnyRole("USER")
-//	.antMatchers("/uploads/**").hasAnyRole("USER")
-//	.antMatchers("/form/**").hasAnyRole("ADMIN")
-//	.antMatchers("/eliminar/**").hasAnyRole("ADMIN")
-//	.antMatchers("/factura/**").hasAnyRole("ADMIN")
-	.anyRequest().authenticated()
-	.and()
-		.formLogin()
-			.successHandler(successHandler)
-			.loginPage("/login")
-		.permitAll()
-	.and()
-	.logout().permitAll()
-	.and()
-	.exceptionHandling().accessDeniedPage("/error_403");
-	}
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar").permitAll()
+                // .antMatchers("/ver/**").hasAnyRole("USER")
+                // .antMatchers("/uploads/**").hasAnyRole("USER")
+                // .antMatchers("/form/**").hasAnyRole("ADMIN")
+                // .antMatchers("/eliminar/**").hasAnyRole("ADMIN")
+                // .antMatchers("/factura/**").hasAnyRole("ADMIN")
+                .anyRequest().authenticated()
+            .and()
+                .formLogin()
+                    .successHandler(successHandler)
+                    .loginPage("/login")
+                    .permitAll()
+            .and()
+                .logout()
+                    .logoutUrl("/logout") // URL de logout
+                    .logoutSuccessUrl("/") // Redirige al inicio después de cerrar sesión
+                    .permitAll() // Permitir a todos acceder a la URL de logout
+            .and()
+                .exceptionHandling().accessDeniedPage("/error_403");
+    }
 
 
 	@Autowired
