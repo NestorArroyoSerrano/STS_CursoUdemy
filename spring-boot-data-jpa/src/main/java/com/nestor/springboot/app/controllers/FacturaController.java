@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.validation.Valid;
+//import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +85,7 @@ public class FacturaController {
 	}
 
 	@PostMapping("/form")
-	public String guardar(@Valid Factura factura, BindingResult result, Model model,
+	public String guardar(/*@Valid */ Factura factura, BindingResult result, Model model,
 			@RequestParam(name = "item_id[]", required = false) Long[] itemId,
 			@RequestParam(name = "cantidad[]", required = false) Integer[] cantidad, RedirectAttributes flash,
 			SessionStatus status, Locale locale) {
